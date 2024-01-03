@@ -4,6 +4,7 @@ import { CannotBeUpperCase } from '../validator/string/cannot/cannot.uppercase.d
 export class Model extends Validatable {
   @CannotBeUpperCase('Input cannot be upper case.')
   public input: string | null = null;
+
 }
 
 const model = new Model();
