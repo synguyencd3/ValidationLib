@@ -1,8 +1,28 @@
-import { IValidator} from './validator/IValidator';
+import { MustMatch } from './validator/MustMatch';
+import { NotNullOrEmpty } from './validator/NotNullOrEmpty';
+import { Validator} from './validator/Validator';
 
 export class ValidationFactory {
-    public static create(validator: string, param? :any): IValidator
+    static map = new Map<String, Validator>();
+
+    public static create(validatorName: string, param? :any): Validator
     {
-        return null;
+        let Validator = ValidationFactory.map.get(validatorName);
+        if (Validator== null)
+        {
+            switch (validatorName)
+            {
+                case "Validation:NotNullOrEmpty":
+                    Validator = new NotNullOrEmpty();
+                    break;
+                case "Validation:MustMatch":
+                    Validator = new MustMatch(param);
+                    break;
+                default:
+                        return Validator;
+            }
+        }
+        this.map.set(validatorName, Validator);
+        return Validator;
     }
 }
