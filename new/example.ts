@@ -1,7 +1,7 @@
 
-import { validation } from "./validation";
-import { NotNullOrEmpty } from "./validator/NotNullOrEmptyDecorator";
-import { MustMatch } from "./validator/MustMatchDecorator";
+import { Validation } from "./Validation";
+import { NotNullOrEmpty } from "./Validator/NotNullOrEmptyDecorator";
+import { MustMatch } from "./Validator/MustMatchDecorator";
 
 
 // function CannotBeUpperCase(message?: string){
@@ -20,12 +20,12 @@ export class Model {
   }
 
 const model = new Model();
-const value = 'cd.synguyen@gmail.com';
+const value = 'cd.synguyengmail.com';
 model.input = value;
 //model.output = 14;
 
 
- var valid = new validation;
+ var valid = Validation.getInstance();
  const violations = valid.validate(model);
   if (violations.size==0)
   {
@@ -33,5 +33,8 @@ model.input = value;
   } 
   else
   {
-    console.log("invalid")
+    violations.forEach(function(violation)
+    {
+      console.log(violation.getMessage());
+    })
   }

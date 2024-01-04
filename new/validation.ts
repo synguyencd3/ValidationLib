@@ -1,8 +1,13 @@
 import { ConstraintViolation } from "./ConstraintViolation";
 import { ValidationFactory } from "./ValidationFactory";
 
-export class validation 
+export class Validation 
 {
+    private static instance: Validation;
+    private constructor()
+    {
+
+    }
 
     public validate(target: object): Set<ConstraintViolation>
     {
@@ -17,7 +22,7 @@ export class validation
         return set;   
     }
 
-    public validateField(target: object, field: string): ConstraintViolation
+    private validateField(target: object, field: string): ConstraintViolation
     {
         const annotations: any[] = Reflect.getMetadataKeys(target, field).filter(key => key.toString().startsWith("Validation"));
         const params: any[] = annotations.filter(key => key.toString())
@@ -36,4 +41,11 @@ export class validation
         }
         return null;
     }   
+
+    public static getInstance(): Validation
+    {
+        if (!Validation.instance)
+            Validation.instance = new Validation();
+        return Validation.instance;
+    }
 }

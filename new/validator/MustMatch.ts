@@ -1,5 +1,7 @@
 import { Validator } from "./Validator";
 
+
+
 export class MustMatch extends Validator
 {
     regex: RegExp;

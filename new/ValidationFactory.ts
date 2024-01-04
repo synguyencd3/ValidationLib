@@ -1,6 +1,6 @@
-import { MustMatch } from './validator/MustMatch';
-import { NotNullOrEmpty } from './validator/NotNullOrEmpty';
-import { Validator} from './validator/Validator';
+import { MustMatch } from './Validator/MustMatch';
+import { NotNullOrEmpty } from './Validator/NotNullOrEmpty';
+import { Validator} from './Validator/Validator';
 
 export class ValidationFactory {
     static map = new Map<String, Validator>();
