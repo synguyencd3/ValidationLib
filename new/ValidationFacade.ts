@@ -1,21 +1,18 @@
 import { Validation } from './validation';
-import { ConstraintViolation } from './ConstraintViolation';
+import { ValidationErrorHandler } from './ValidationErrorHandler';
 
 export class ValidationFacade {
   private validation: Validation;
+  private errorHandler: ValidationErrorHandler;
 
   constructor() {
     this.validation = Validation.getInstance();
+    this.errorHandler = new ValidationErrorHandler();
+    this.validation.addObserver(this.errorHandler);
   }
 
   validateModel(model: any): void {
-    const violations = this.validation.validate(model);
-    if (violations.size > 0) {
-      let errorMessages = '';
-      violations.forEach((violation: ConstraintViolation) => {
-        errorMessages += violation.getMessage() + '\n';
-      });
-      throw new Error(errorMessages);
-    }
+    this.validation.validate(model);
+    this.errorHandler.throwErrorIfAny();
   }
 }
