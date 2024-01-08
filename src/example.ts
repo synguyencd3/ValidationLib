@@ -10,15 +10,15 @@ import { ValidationFacade } from './ValidationFacade';
 
 export class Model {
   @NotNullOrEmpty()
-  @MustMatch(/^[A-Za-z0-9+_.-]+@(.+)$/)
+  @MustMatch(/^[a-z]+$/)
   input: string | null = null;
 
   @NotNullOrEmpty()
-  output: any | null = null;
+  output: any | null = 1;
 }
 
 const model = new Model();
-const value = 'cd.synguyengmail.com';
+const value = '123';
 model.input = value;
 //model.output = 14;
 
