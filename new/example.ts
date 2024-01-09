@@ -1,6 +1,7 @@
 import { NotNullOrEmpty } from './validator/NotNullOrEmptyDecorator';
 import { MustMatch } from './validator/MustMatchDecorator';
 import { ValidationFacade } from './ValidationFacade';
+import { Between } from './validator/BetweenDecorator';
 
 // function CannotBeUpperCase(message?: string){
 //   return (target: Object, propertyKey: string) => Reflect.defineMetadata("Validation:CannotBeUpperCase", "", target, propertyKey);
@@ -15,12 +16,16 @@ export class Model {
 
   @NotNullOrEmpty()
   output: any | null = null;
+
+  @Between([0, 122])
+  age: number | null = null;
 }
 
 const model = new Model();
 const value = 'cd.synguyengmail.com';
 model.input = value;
 //model.output = 14;
+model.age = 123;
 
 const facade = new ValidationFacade();
 try {
