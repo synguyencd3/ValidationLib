@@ -1,32 +1,39 @@
-import { NotNullOrEmpty } from './validator/NotNullOrEmptyDecorator';
-import { MustMatch } from './validator/MustMatchDecorator';
 import { ValidationFacade } from './ValidationFacade';
+import { MustMatch } from './validator/MustMatchDecorator';
+import { NotNullOrEmpty } from './validator/NotNullOrEmptyDecorator';
 
-// function CannotBeUpperCase(message?: string){
-//   return (target: Object, propertyKey: string) => Reflect.defineMetadata("Validation:CannotBeUpperCase", "", target, propertyKey);
-//   //return (target: Object, propertyKey: string) => Reflect.defineMetadata("CannotBeUpperCaseValidator", new  CannotBeUpperCaseValidator(message,null), target, propertyKey);
-//   //Reflect.defineMetadata("Validation", "Validate", target, propertyKey);
-// }
-
-export class Model {
+class NotNullOrEmptyClass {
   @NotNullOrEmpty()
-  @MustMatch(/^[a-z]+$/)
-  input: string | null = null;
-
-  @NotNullOrEmpty()
-  output: any | null = 1;
+  input: string;
 }
 
-const model = new Model();
-const value = '123';
-model.input = value;
-//model.output = 14;
+class MustMatchClass {
+  @MustMatch(/^[0-9]{3}$/)
+  input: string;
+}
 
-const facade = new ValidationFacade();
-try {
-  facade.validateModel(model);
-  console.log('Validation passed');
-} catch (error) {
-  console.log('Validation failed with the following violations:');
-  console.log(error.message);
+const validators = {
+  NotNullOrEmpty: new NotNullOrEmptyClass(),
+  MustMatch: new MustMatchClass(),
+};
+
+export function validate(selectedValidator: string, inputValue: string, regex?: RegExp) {
+  // Get the selected validator function
+  let model = validators[selectedValidator];
+
+  if (selectedValidator === 'MustMatch' && regex) {
+    model = new MustMatchClass();
+    Reflect.defineMetadata('Validation:MustMatch', regex, model, 'input');
+  }
+
+  model.input = inputValue;
+
+  const facade = new ValidationFacade();
+
+  try {
+    facade.validateModel(model);
+    return 'Validation passed';
+  } catch (error) {
+    return 'Validation failed with the following violations: ' + error.message;
+  }
 }
