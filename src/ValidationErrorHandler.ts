@@ -1,7 +1,7 @@
 import { ConstraintViolation } from './ConstraintViolation';
-import { ValidationObserver } from './validation';
+import { ErrorHandler } from './validation';
 
-export class ValidationErrorHandler implements ValidationObserver {
+export class ThrowErrorHandler implements ErrorHandler {
   private errorMessages = '';
 
   update(constraint: ConstraintViolation): void {

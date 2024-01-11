@@ -32,7 +32,7 @@ export class ValidationFactory {
     ['Validation:Between', new BetweenFactory()],
   ]);
 
-  public static create(validatorName: string, param?: any): Validator {
+  public static getFactory(validatorName: string, param?: any): Validator {
     const factory = ValidationFactory.map.get(validatorName);
     return factory ? factory.create(param) : null;
   }
