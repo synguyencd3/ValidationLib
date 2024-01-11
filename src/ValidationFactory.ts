@@ -1,3 +1,4 @@
+import { Between } from './validator/Between';
 import { MustMatch } from './validator/MustMatch';
 import { NotNullOrEmpty } from './validator/NotNullOrEmpty';
 import { Validator } from './validator/Validator';
@@ -18,10 +19,17 @@ class MustMatchFactory extends ValidatorFactory {
   }
 }
 
+class BetweenFactory extends ValidatorFactory {
+  create(param: any): Validator {
+    return new Between(param);
+  }
+}
+
 export class ValidationFactory {
   static map = new Map<String, ValidatorFactory>([
     ['Validation:NotNullOrEmpty', new NotNullOrEmptyFactory()],
     ['Validation:MustMatch', new MustMatchFactory()],
+    ['Validation:Between', new BetweenFactory()],
   ]);
 
   public static create(validatorName: string, param?: any): Validator {

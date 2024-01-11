@@ -48,7 +48,11 @@ export class Validation {
       .filter((key) => key.toString())
       .reduce((values, key) => {
         const currValues = Reflect.getMetadata(key, target, field);
-        return values.concat(currValues);
+
+        // If currValues is an array, add currValues as a single element to values
+        // Ref: https://stackoverflow.com/questions/62629488/add-subarray-to-an-array-that-contains-subarrays-in-javascript
+        values.push(currValues);
+        return values;
       }, []);
     for (let i = 0; i < annotations.length; i++) {
       const validator = ValidationFactory.create(annotations[i], params[i]);
