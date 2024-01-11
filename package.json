@@ -1,18 +1,23 @@
 {
   "name": "validation-typescript",
-  "type": "commonjs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node ./dist/example/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc && webpack",
+    "copy-html": "copyfiles -u 1 src/**/*.html dist",
+    "start": "npm run build && npm run copy-html && lite-server --baseDir=dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "copyfiles": "^2.4.1",
+    "lite-server": "^2.6.1",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "reflect-metadata": "^0.2.1"
