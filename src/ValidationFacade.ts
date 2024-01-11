@@ -1,14 +1,14 @@
 import { Validation } from './validation';
-import { ValidationErrorHandler } from './ValidationErrorHandler';
+import { ThrowErrorHandler } from './ValidationErrorHandler';
 
 export class ValidationFacade {
   private validation: Validation;
-  private errorHandler: ValidationErrorHandler;
+  private errorHandler: ThrowErrorHandler;
 
   constructor() {
     this.validation = Validation.getInstance();
-    this.errorHandler = new ValidationErrorHandler();
-    this.validation.addObserver(this.errorHandler);
+    this.errorHandler = new ThrowErrorHandler();
+    this.validation.addListener(this.errorHandler);
   }
 
   validateModel(model: any): void {

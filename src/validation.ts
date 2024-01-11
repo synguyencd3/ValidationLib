@@ -1,23 +1,23 @@
 import { ConstraintViolation } from './ConstraintViolation';
 import { ValidationFactory } from './ValidationFactory';
 
-export interface ValidationObserver {
+export interface ErrorHandler {
   update(constraint: ConstraintViolation): void;
 }
 export class Validation {
   private static instance: Validation;
-  private observers: ValidationObserver[] = [];
+  private listeners: ErrorHandler[] = [];
 
   private constructor() {}
 
-  public addObserver(observer: ValidationObserver): void {
-    this.observers.push(observer);
+  public addListener(listener: ErrorHandler): void {
+    this.listeners.push(listener);
   }
 
-  public removeObserver(observer: ValidationObserver): void {
-    const index = this.observers.indexOf(observer);
+  public removeListener(listener: ErrorHandler): void {
+    const index = this.listeners.indexOf(listener);
     if (index !== -1) {
-      this.observers.splice(index, 1);
+      this.listeners.splice(index, 1);
     }
   }
 
@@ -28,15 +28,15 @@ export class Validation {
       const result = this.validateField(target, field);
       if (result != null) {
         set.add(result);
-        this.notifyObservers(result);
+        this.notifyListeners(result);
       }
     }
     return set;
   }
 
-  private notifyObservers(constraint: ConstraintViolation): void {
-    for (let observer of this.observers) {
-      observer.update(constraint);
+  private notifyListeners(constraint: ConstraintViolation): void {
+    for (let listener of this.listeners) {
+      listener.update(constraint);
     }
   }
 
@@ -55,7 +55,7 @@ export class Validation {
         return values;
       }, []);
     for (let i = 0; i < annotations.length; i++) {
-      const validator = ValidationFactory.create(annotations[i], params[i]);
+      const validator = ValidationFactory.getFactory(annotations[i], params[i]);
       const constraint = validator.validate(target, field);
       if (constraint.invalid()) {
         return constraint;
