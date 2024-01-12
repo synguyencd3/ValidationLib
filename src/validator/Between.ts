@@ -2,11 +2,10 @@ import { Validator } from "./Validator";
 
 export class Between extends Validator {
     // Upper and lower bounds are inclusive
-    lower: number;
-    upper: number;
+    lower;
+    upper;
 
-    constructor([lower, upper]: [number, number]) {
-        console.log(lower, upper);
+    constructor([lower, upper]) {
         super();
         this.lower = lower;
         this.upper = upper;
@@ -14,7 +13,12 @@ export class Between extends Validator {
     }
 
     public invalid(field: string, value: any): boolean {
-        return value < this.lower || value > this.upper;
+        if (typeof this.lower !== typeof this.upper) {
+            this.message = "Lower and upper bounds must be of the same type";
+            return true;
+        };
+
+        return !(value >= this.lower && value <= this.upper);
     }
 
     public getMessage(field: string): string {

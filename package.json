@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && webpack npm run copy-html",
+    "build": "tsc && webpack && npm run copy-html",
     "copy-html": "copyfiles -u 1 src/**/*.html dist",
     "start": "npm run build && lite-server --baseDir=dist"
   },
